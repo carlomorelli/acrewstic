@@ -1,6 +1,17 @@
 from flask import Flask, jsonify, abort, request, make_response
+from redis import StrictRedis
 
 app = Flask(__name__)
+redis = StrictRedis(host='redis', port=6379)
+
+# store dictionary
+#    redis.hmset(hkey, dict_to_store)
+# retrieve dictionary
+#    redis.hmget(hkey)
+# lists
+#    redis.lappend(hkey, string)
+#    redis.llen
+
 
 """
 Starting collection
@@ -78,6 +89,12 @@ def delete_task(task_id):
         abort(404)
     tasks.remove(task[0])
     return jsonify({'result': True})
+
+
+@app.route('/acrewstic/version', methods=['GET'])
+def get_version():
+    return '--- Acrewstic v1.0 ---\n\nFlask info: using v0.11.1\nRedis info: %s' % redis.info()
+
 
 """
 Main loop
