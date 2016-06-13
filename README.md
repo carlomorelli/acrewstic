@@ -18,9 +18,9 @@ DELETE | Remove all info of specific media | curl -i -X DELETE http://localhost:
 
 PyPI requirements for the application are listed in `requirements.txt` file:
 
-# `flask` - providing the Flask web service library
-# `redis` - providing the redis-py package for interfacing the key-value store
-# `nose` - providing the reference test engine
+* `flask` provides the web service library
+* `redis` is the redis-py package which allows interfacing the key-value store
+* `nose` is the reference test engine
 
 Additional requirement is to install the Redis service on the system. If Docker is installed on the system, it is possible to deploy the official Redis image with a single command:
 
