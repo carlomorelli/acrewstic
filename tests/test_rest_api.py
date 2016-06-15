@@ -63,3 +63,4 @@ class TestRestApi:
         data = json.loads(result.data)
         print "Receving data: %s" % data
         assert data['result'] == True
+

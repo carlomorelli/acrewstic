@@ -1,0 +1,12 @@
+version: '2'
+services:
+  acrewstic:
+    build: .
+    ports:
+     - "5000:5000"
+    volumes:
+     - .:/acrewstic
+    depends_on:
+     - redis
+  redis:
+    image: redis

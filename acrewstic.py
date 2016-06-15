@@ -93,11 +93,18 @@ def delete_task(task_id):
 
 @app.route('/acrewstic/version', methods=['GET'])
 def get_version():
-    return '--- Acrewstic v1.0 ---\n\nFlask info: using v0.11.1\nRedis info: %s' % redis.info()
+    return '''
+    --- Acrewstic v1.0 ---
+
+    Flask info: using v0.11.1
+
+    Redis info: %s
+
+    ''' % redis.info()
 
 
 """
 Main loop
 """
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
