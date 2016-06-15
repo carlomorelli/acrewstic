@@ -1,43 +1,71 @@
 import json
+import logging
 import acrewstic
-import threading
-from nose import with_setup
-from urllib2 import urlopen
+from nose import with_setup 
 
 
-class ClientApi():
-    def request(self, api):
-        url = "http://localhost:5000" + api
-        response = urlopen(url)
-        raw_data = response.read().decode('utf-8')
-        return json.loads(raw_data)
+class TestRestApi: 
 
+    @classmethod
+    def setup_class(self):
+        print "Setting up application"
+        self.client = acrewstic.app.test_client()
+        self.client.testing = True 
 
-# class ServerApi(threading.Thread):
-#     def __init__(self):
-#         threading.Thread.__init__(self)
-#         self.app = acrewstic.app
-#     def run(self):
-#         self.app.run()
+    @classmethod
+    def teardown_class(self):
+        print "Shutting down application"
+        pass 
 
+    # @with_setup(setup, teardown)
+    def test_1_get_tasks(self):
+        result = self.client.get('/acrewstic/tasks') 
+        assert result.status_code == 200
+        data = json.loads(result.data) 
+        print "Receving data: %s" % data
+        assert len(data['tasks']) == 2
 
-class TestRestApi():
+    # @with_setup(setup, teardown)
+    def test_2_get_task(self):
+        task_id = 2
+        result = self.client.get('/acrewstic/tasks/%s' % task_id) 
+        assert result.status_code == 200
+        data = json.loads(result.data)
+        print "Receving data: %s" % data
+        assert len(data) == 1
+        assert data['task']['id'] == task_id
 
-    def setup(self):
-        self.client = ClientApi()
-        # self.server = ServerApi()
+    # @with_setup(setup, teardown)
+    def test_3_post_task(self):
+        new_task = {
+            'title'       : 'NewTitle',
+            'description' : 'NewDescription'
+        }
+        result = self.client.post('/acrewstic/tasks', data=json.dumps(new_task), content_type = 'application/json')
+        assert result.status_code == 201
+
+    # @with_setup(setup, teardown)
+    def test_4_update_task(self):
+        update_task = {
+            'title' : 'NewTitle2',
+            'done'  : True
+        }
+        task_id = 2
+        result = self.client.put('/acrewstic/tasks/%s' % task_id, data=json.dumps(update_task), content_type = 'application/json')
+        assert result.status_code == 200
+        result = self.client.get('/acrewstic/tasks/%s' % task_id)
+        assert result.status_code == 200
+        data = json.loads(result.data)
+        print "Receving data: %s" % data
+        assert data['task']['id'] == task_id
+        assert data['task']['done'] == True
+        assert data['task']['title'] == 'NewTitle2'
         
-
-
-    @with_setup(setup)
-    def test_get_tasks(self):
-        api = '/acrewstic/tasks'
-        # self.server.start()
-        try:
-            response = self.client.request(api)
-            print response
-            assert 'tasks' in response
-            #self.assertEqual(response['name'], 'Test User')
-        except:
-            print "ERROR: connection rejected"
-            assert False
+    # @with_setup(setup, teardown)
+    def test_5_delete_task(self):
+        task_id = 1
+        result = self.client.delete('/acrewstic/tasks/%s' % task_id) 
+        assert result.status_code == 200
+        data = json.loads(result.data)
+        print "Receving data: %s" % data
+        assert data['result'] == True
