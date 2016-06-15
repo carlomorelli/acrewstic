@@ -93,15 +93,19 @@ def delete_task(task_id):
 
 @app.route('/acrewstic/version', methods=['GET'])
 def get_version():
-    return '''
-    --- Acrewstic v1.0 ---
-
-    Flask info: using v0.11.1
-
-    Redis info: %s
-
-    ''' % redis.info()
-
+    app_info = {
+        'name': 'Acrewstic',
+        'version': '0.1'
+    }
+    flask_info = {
+        'version': '0.11.1'  
+    }
+    redis_info = redis.info()
+    return jsonify({
+        'app_info'   : app_info,
+        'flask_info' : flask_info,
+        'redis_info' : redis_info
+        })
 
 """
 Main loop
