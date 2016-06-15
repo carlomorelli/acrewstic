@@ -1,7 +1,6 @@
 import json
 import logging
 import acrewstic
-from nose import with_setup 
 
 
 class TestRestApi: 
@@ -17,7 +16,6 @@ class TestRestApi:
         print "Shutting down application"
         pass 
 
-    # @with_setup(setup, teardown)
     def test_1_get_tasks(self):
         result = self.client.get('/acrewstic/tasks') 
         assert result.status_code == 200
@@ -25,7 +23,6 @@ class TestRestApi:
         print "Receving data: %s" % data
         assert len(data['tasks']) == 2
 
-    # @with_setup(setup, teardown)
     def test_2_get_task(self):
         task_id = 2
         result = self.client.get('/acrewstic/tasks/%s' % task_id) 
@@ -35,7 +32,6 @@ class TestRestApi:
         assert len(data) == 1
         assert data['task']['id'] == task_id
 
-    # @with_setup(setup, teardown)
     def test_3_post_task(self):
         new_task = {
             'title'       : 'NewTitle',
@@ -44,7 +40,6 @@ class TestRestApi:
         result = self.client.post('/acrewstic/tasks', data=json.dumps(new_task), content_type = 'application/json')
         assert result.status_code == 201
 
-    # @with_setup(setup, teardown)
     def test_4_update_task(self):
         update_task = {
             'title' : 'NewTitle2',
@@ -61,7 +56,6 @@ class TestRestApi:
         assert data['task']['done'] == True
         assert data['task']['title'] == 'NewTitle2'
         
-    # @with_setup(setup, teardown)
     def test_5_delete_task(self):
         task_id = 1
         result = self.client.delete('/acrewstic/tasks/%s' % task_id) 
