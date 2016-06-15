@@ -22,18 +22,36 @@ PyPI requirements for the application are listed in `requirements.txt` file:
 * `redis` is the redis-py package which allows interfacing the key-value store
 * `nose` is the reference test engine
 
-Additional requirement is to install the Redis service on the system. If Docker is installed on the system, it is possible to deploy the official Redis image with a single command:
+
+## Running with Docker and Docker-compose
+
+A strong requirement is to install the Redis service on the system.  If Docker is installed on the system (see next section), it is possible to deploy a container of the official Redis image with a single command:
 
 ```bash
 $ docker run -d redis
 ```
-
 This command will download (if it is the first launch) and activate detached (parameter `-d`) the service on the background, listening on default port 6379/tcp. Run `docker ps -a` to double check. 
-Finally, once dependencies are installed in the system (or in a working virtualenv), to start the application in a terminal simply launch
+
+In the codebase a `Dockerfile` is available for also packaging the _acrewstic_ application. To create an image, and then run a container of it, run:
 
 ```bash
-$ python acrewstic.py
+$ docker build -t acrewstic .
+$ docker run -d -p 5000:5000 acrewstic
 ```
+
+In addition to the `Dockerfile`, a `docker-compose.yml` script is also available for turning on and off both images in an orchestrated way when `docker-compose` is installed on the system (see https://github.com/docker/compose):
+
+```bash
+$ docker-compose up -d
+$ docker-compose down
+```
+
+To verify that the the app is working correctly, including the bridge to Redis, launch:
+
+```bash
+$ curl -i http://localhost:5000/acrewstic/version
+```
+
 
 ### More info
 TBD
