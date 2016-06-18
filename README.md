@@ -1,6 +1,9 @@
 # acrewstic
 Music and media repository for your NAS, written in Python
+
 [![Build Status](https://travis-ci.org/carlomorelli/acrewstic.svg?branch=master)](https://travis-ci.org/carlomorelli/acrewstic)
+[![Coverage Status](https://coveralls.io/repos/github/carlomorelli/acrewstic/badge.svg?branch=master)](https://coveralls.io/github/carlomorelli/acrewstic?branch=master)
+
 
 ## About
 _acrewstic_ is implemented as a RESTful API using Python 2.7 with Flask library (http://flask.pocoo.org/).
