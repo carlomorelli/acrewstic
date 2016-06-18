@@ -2,6 +2,7 @@ import json
 import mock
 import redis
 import acrewstic
+import mockredis
 
 
 class TestRestApi:
@@ -16,12 +17,15 @@ class TestRestApi:
     def teardown_class(self):
         print "Shutting down application..."
 
-    @mock.patch.object(redis.StrictRedis, 'info')
-    def test_0_get_version(self, mock_info):
-        # result = self.client.get('/acrewstic/version')
-        # assert result.status_code == 200
-        self.client.get('/acrewstic/version')
-        mock_info.assert_called()
+    @mock.patch('redis.StrictRedis', mockredis.mock_strict_redis_client)
+    def test_0_get_version(self):
+        # mock_info.return_value = json.dumps({'version': 'fakeRedis'})
+        result = self.client.get('/acrewstic/version')
+        assert result.status_code == 200
+        # mock_info.assert_called()
+        data = json.loads(result.data)
+        print data
+        # assert data['redis_info']['version'] == 'fakeRedis'
 
     def test_1_get_tasks(self):
         result = self.client.get('/acrewstic/tasks')
