@@ -1,6 +1,5 @@
 # acrewstic
 Music and media repository for your NAS, written in Python
-
 [![Build Status](https://travis-ci.org/carlomorelli/acrewstic.svg?branch=master)](https://travis-ci.org/carlomorelli/acrewstic)
 [![Coverage Status](https://coveralls.io/repos/github/carlomorelli/acrewstic/badge.svg?branch=master)](https://coveralls.io/github/carlomorelli/acrewstic?branch=master)
 
@@ -13,11 +12,11 @@ The API is implemented for POST, PUT, GET, DELETE methods. It can be triggered a
 
 Action | Description                       | Triggering with Curl
 ------ | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------
-GET    | Get the full details of all media | curl -i http://localhost:5000/acrewstic/tasks
-GET    | Get the details of specific media | curl -i http://localhost:5000/acrewstic/tasks/_tasknr_
-POST   | Insert new media with details     | curl -i -H "Content-Type: application/json" -X POST -d '{"title":"Title"}' http://localhost:5000/acrewstic/tasks
-PUT    | Modify details of specific media  | curl -i -H "Content-Type: application/json" -X PUT -d '{"description":"Description"}' http://localhost:5000/acrewstic/tasks/_tasknr_
-DELETE | Remove all info of specific media | curl -i -X DELETE http://localhost:5000/acrewstic/tasks/_tasknr_
+GET    | Get the full details of all media | `curl -i http://localhost:5000/acrewstic/tasks`
+GET    | Get the details of specific media | `curl -i http://localhost:5000/acrewstic/tasks/_tasknr_`
+POST   | Insert new media with details     | `curl -i -H "Content-Type: application/json" -X POST -d '{"title":"Title"}' http://localhost:5000/acrewstic/tasks`
+PUT    | Modify details of specific media  | `curl -i -H "Content-Type: application/json" -X PUT -d '{"description":"Description"}' http://localhost:5000/acrewstic/tasks/_tasknr_`
+DELETE | Remove all info of specific media | `curl -i -X DELETE http://localhost:5000/acrewstic/tasks/_tasknr_`
 
 PyPI requirements for the application are listed in `requirements.txt` file:
 

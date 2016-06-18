@@ -78,3 +78,48 @@ class TestRestApi:
         data = json.loads(result.data)
         print "Receving data: %s" % data
         assert data['result']
+
+    def test_6_delete_unexisting_task(self):
+        task_id = 1
+        result = self.client.delete('/acrewstic/tasks/%s' % task_id)
+        print "Receving data: %s" % json.loads(result.data)
+        assert result.status_code == 404
+        data = json.loads(result.data)
+        assert data['error'] == 'Not found'
+
+    def test_7_update_unexisting_task(self):
+        update_task = {
+            'title': 'NewTitle2',
+            'done': True
+        }
+        task_id = 1
+        result = self.client.put(
+            '/acrewstic/tasks/%s' % task_id,
+            data=json.dumps(update_task),
+            content_type='application/json'
+        )
+        print "Receving data: %s" % json.loads(result.data)
+        assert result.status_code == 404
+        data = json.loads(result.data)
+        assert data['error'] == 'Not found'
+
+    def test_8_update_with_with_wrong_encoding(self):
+        task_id = 2
+        update_task = {
+            'done': 'True'
+        }
+        result = self.client.put(
+            '/acrewstic/tasks/%s' % task_id,
+            data=json.dumps(update_task),
+            content_type='application/json'
+        )
+        assert result.status_code == 400
+
+    def test_9_get_unexisting_api(self):
+        result = self.client.get('/acrewstic/unexisting')
+        print "Receving data: %s" % json.loads(result.data)
+        assert result.status_code == 404
+        data = json.loads(result.data)
+        assert data['error'] == 'Not found'
+
+
