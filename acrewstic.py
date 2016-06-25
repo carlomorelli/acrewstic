@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, abort, request, make_response
-from acrewlib import MyRedis
+from acrewlib import Store
 
 app = Flask(__name__)
 
-redis = MyRedis(host='localhost', port=6379)
+store = Store(host='localhost', port=6379)
 
 
 """
@@ -103,7 +103,7 @@ def get_version():
         'version': '0.11.1'
     }
     try:
-        redis_info = redis.r.info()
+        redis_info = store.r.info()
     except:
         redis_info = '<<<Unable to connect to database>>>'
     return jsonify({

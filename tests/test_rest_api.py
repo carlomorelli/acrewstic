@@ -1,6 +1,5 @@
 import json
 import mock
-import redis
 import acrewstic
 import mockredis
 
@@ -125,5 +124,3 @@ class TestRestApi:
         assert result.status_code == 404
         data = json.loads(result.data)
         assert data['error'] == 'Not found'
-
-

@@ -2,7 +2,7 @@ import json
 from redis import StrictRedis
 
 
-class MyRedis:
+class Store:
 
     def __init__(self, host, port):
         self.r = StrictRedis(host=host, port=port)
@@ -45,3 +45,6 @@ class MyRedis:
             item_json = json.dumps(item_dict)
             if not self.r.lpush(key_store, item_json):
                 raise Exception('Unable to write key_store: [%s]' % item_json)
+
+    def delete(self, key_store):
+        self.r.delete(key_store)
