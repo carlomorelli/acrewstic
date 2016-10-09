@@ -11,28 +11,30 @@ engine = create_engine('sqlite:///:memory:', echo=False)
 class Store:
 
     def __init__(self):
+        Task.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         self.session = Session()
 
     def get_item(self, index):
-        query = self.session.query(Task).filter(Task.id.in_([index])).all()
+        query = self.session.query(Task).filter(Task.id == index).all()
         assert len(query) == 1
-        return query[0]
+        return query[0].dumps()
 
     def fetch_all(self):
         query = self.session.query(Task).all()
-        return query
+        return [item.dumps() for item in query]
 
     def delete(self, index):
-        query = self.session.query(Task).filter(Task.id.in_([index])).all()
+        query = self.session.query(Task).filter(Task.id == index).all()
         assert len(query) == 1
         self.session.delete(query[0])
         self.session.commit()
-        query = self.session.query(Task).filter(Task.id.in_([index])).all()
+        query = self.session.query(Task).filter(Task.id == index).all()
         assert len(query) == 0
 
     def append_item(self, json_item):
         task = Task.loads(json_item)
+        print "decoded: %s" % task
         self.session.add(task)
         self.session.commit()
 

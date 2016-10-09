@@ -1,9 +1,13 @@
 from flask import Flask, jsonify, abort, request, make_response
-from acrewlib import Store
+#from acrewlib import Store
+from libacrewstic import Store
+import json
 
 app = Flask(__name__)
+store = Store()
 
-store = Store(host='localhost', port=6379)
+
+#store = Store(host='localhost', port=6379)
 
 
 """
@@ -11,18 +15,20 @@ Starting collection
 """
 tasks = [
     {
-        'id': 1,
+#        'id': 1,
         'title': u'Buy groceries',
         'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
         'done': False
     },
     {
-        'id': 2,
+#        'id': 2,
         'title': u'Learn Python',
         'description': u'Need to find a good Python tutorial on the web',
         'done': False
     }
 ]
+
+tasks = [json.dumps(x) for x in tasks]
 
 """
 Rest implementations
@@ -118,4 +124,13 @@ Main loop
 """
 
 if __name__ == '__main__':
+    for item in tasks:
+        print "dumping <%s> into db..." % item
+        store.append_item(item)
+
+    stored_tasks = store.fetch_all()
+    print len(tasks)
+    print len(stored_tasks)
+    for item in tasks:
+        print json.loads(item) in stored_tasks
     app.run(host='0.0.0.0', debug=True)
