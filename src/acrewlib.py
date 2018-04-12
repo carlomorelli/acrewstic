@@ -2,7 +2,7 @@ import json
 from redis import StrictRedis
 
 
-class Store:
+class Repository:
 
     def __init__(self, host, port):
         self.r = StrictRedis(host=host, port=port)

@@ -1,20 +1,20 @@
 import json
 import mock
-import acrewstic
+from src import acrewstic
 import mockredis
 
 
 class TestRestApi:
 
     @classmethod
-    def setup_class(self):
-        print "Setting up application..."
-        self.client = acrewstic.app.test_client()
-        self.client.testing = True
+    def setup_class(cls):
+        print("Setting up application...")
+        cls.client = acrewstic.app.test_client()
+        cls.client.testing = True
 
     @classmethod
-    def teardown_class(self):
-        print "Shutting down application..."
+    def teardown_class(cls):
+        print("Shutting down application...")
 
     @mock.patch('redis.StrictRedis', mockredis.mock_strict_redis_client)
     def test_0_get_version(self):
@@ -23,14 +23,14 @@ class TestRestApi:
         assert result.status_code == 200
         # mock_info.assert_called()
         data = json.loads(result.data)
-        print data
+        print(data)
         # assert data['redis_info']['version'] == 'fakeRedis'
 
     def test_1_get_tasks(self):
         result = self.client.get('/acrewstic/tasks')
         assert result.status_code == 200
         data = json.loads(result.data)
-        print "Receving data: %s" % data
+        print("Receving data: %s" % data)
         assert len(data['tasks']) == 2
 
     def test_2_get_task(self):
@@ -38,7 +38,7 @@ class TestRestApi:
         result = self.client.get('/acrewstic/tasks/%s' % task_id)
         assert result.status_code == 200
         data = json.loads(result.data)
-        print "Receving data: %s" % data
+        print("Receving data: %s" % data)
         assert len(data) == 1
         assert data['task']['id'] == task_id
 
@@ -69,7 +69,7 @@ class TestRestApi:
         result = self.client.get('/acrewstic/tasks/%s' % task_id)
         assert result.status_code == 200
         data = json.loads(result.data)
-        print "Receving data: %s" % data
+        print("Receving data: %s" % data)
         assert data['task']['id'] == task_id
         assert data['task']['done']
         assert data['task']['title'] == 'NewTitle2'
@@ -79,13 +79,13 @@ class TestRestApi:
         result = self.client.delete('/acrewstic/tasks/%s' % task_id)
         assert result.status_code == 200
         data = json.loads(result.data)
-        print "Receving data: %s" % data
+        print("Receving data: %s" % data)
         assert data['result']
 
     def test_6_delete_unexisting_task(self):
         task_id = 1
         result = self.client.delete('/acrewstic/tasks/%s' % task_id)
-        print "Receving data: %s" % json.loads(result.data)
+        print("Receving data: %s" % json.loads(result.data))
         assert result.status_code == 404
         data = json.loads(result.data)
         assert data['error'] == 'Not found'
@@ -101,7 +101,7 @@ class TestRestApi:
             data=json.dumps(update_task),
             content_type='application/json'
         )
-        print "Receving data: %s" % json.loads(result.data)
+        print("Receving data: %s" % json.loads(result.data))
         assert result.status_code == 404
         data = json.loads(result.data)
         assert data['error'] == 'Not found'
@@ -120,7 +120,7 @@ class TestRestApi:
 
     def test_9_get_unexisting_api(self):
         result = self.client.get('/acrewstic/unexisting')
-        print "Receving data: %s" % json.loads(result.data)
+        print("Receving data: %s" % json.loads(result.data))
         assert result.status_code == 404
         data = json.loads(result.data)
         assert data['error'] == 'Not found'

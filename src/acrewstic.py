@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, abort, request, make_response
-from acrewlib import Store
+from .acrewlib import Repository
 
 app = Flask(__name__)
 
-store = Store(host='localhost', port=6379)
+repository = Repository(host='localhost', port=6379)
 
 
 """
@@ -69,10 +69,10 @@ def update_task(task_id):
     if not request.get_json():
         abort(400)
     if 'title' in request.get_json():
-        if type(request.get_json()['title']) is not unicode:
+        if type(request.get_json()['title']) is not str:
             abort(400)
     if 'description' in request.get_json():
-        if type(request.get_json()['description']) is not unicode:
+        if type(request.get_json()['description']) is not str:
             abort(400)
     if 'done' in request.get_json():
         if type(request.get_json()['done']) is not bool:
@@ -103,7 +103,7 @@ def get_version():
         'version': '0.11.1'
     }
     try:
-        redis_info = store.r.info()
+        redis_info = repository.r.info()
     except:
         redis_info = '<<<Unable to connect to database>>>'
     return jsonify({
