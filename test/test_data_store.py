@@ -1,9 +1,5 @@
-import os
-import acrewstic
-import tempfile
-import mockredis
 from nose import with_setup
-from acrewlib import Store
+from src.acrewlib import Store
 
 TEST_KEY_STORE = 'test_key_store'
 test_string = 'test1'
@@ -15,9 +11,9 @@ test_list = range(1, 11)
 class TestDataStore:
 
     @classmethod
-    def setup_class(self):
-        print "Setting up store..."
-        self.store = Store(host='localhost', port=6379)
+    def setup_class(cls):
+        print("Setting up store...")
+        cls.store = Store(host='localhost', port=6379)
 
         # self.db_filedescriptor, acrewstic.app.config['DATABASE']
         #     = tempfile.mkstemp()
@@ -27,8 +23,8 @@ class TestDataStore:
         #     acrewstic.init_db()
 
     @classmethod
-    def teardown_class(self):
-        print "Shutting down store..."
+    def teardown_class(cls):
+        print("Shutting down store...")
         # os.close(self.db_filedescriptor)
         # os.unlink(acrewstic.app.config['DATABASE'])
 
@@ -49,7 +45,7 @@ class TestDataStore:
         self.store.append_item(TEST_KEY_STORE, test_string)
         new_size = len(self.store.fetch_all(TEST_KEY_STORE))
         assert new_size == current_size + 1
-        print "Successfully setting up string"
+        print("Successfully setting up string")
 
     @with_setup(setup, teardown)
     def test_1_put_int(self):
@@ -58,7 +54,7 @@ class TestDataStore:
         self.store.append_item(TEST_KEY_STORE, test_int)
         new_size = len(self.store.fetch_all(TEST_KEY_STORE))
         assert new_size == current_size + 1
-        print "Successfully setting up int"
+        print("Successfully setting up int")
 
     @with_setup(setup, teardown)
     def test_2_put_dict(self):
@@ -67,7 +63,7 @@ class TestDataStore:
         self.store.append_item(TEST_KEY_STORE, test_dict)
         new_size = len(self.store.fetch_all(TEST_KEY_STORE))
         assert new_size == current_size + 1
-        print "Successfully setting up dict"
+        print("Successfully setting up dict")
 
     @with_setup(setup, teardown)
     def test_3_append_and_get(self):
@@ -79,12 +75,12 @@ class TestDataStore:
         new_size = len(self.store.fetch_all(TEST_KEY_STORE))
         assert new_size == current_size + 3
         item = self.store.get_item(TEST_KEY_STORE, 0)
-        assert isinstance(item, str) or isinstance(item, unicode)
+        assert isinstance(item, str)
         item = self.store.get_item(TEST_KEY_STORE, 1)
         assert isinstance(item, int)
         item = self.store.get_item(TEST_KEY_STORE, 2)
         assert isinstance(item, dict)
-        print "Successfully appending string, int and dict in correct order"
+        print("Successfully appending string, int and dict in correct order")
 
     @with_setup(setup, teardown)
     def test_4_set_and_get(self):
@@ -100,5 +96,4 @@ class TestDataStore:
         assert new_size == current_size
         item = self.store.get_item(TEST_KEY_STORE, index)
         assert item == index + 1
-        print "Successfully setting up list and retrieving items"
-
+        print("Successfully setting up list and retrieving items")
