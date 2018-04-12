@@ -1,5 +1,6 @@
+import mock
 from nose import with_setup
-from src.acrewlib import Store
+from src.acrewlib import Repository
 
 TEST_KEY_STORE = 'test_key_store'
 test_string = 'test1'
@@ -8,12 +9,12 @@ test_dict = {'test1': 'test2', 12345: 67890}
 test_list = range(1, 11)
 
 
-class TestDataStore:
+class RepositoryTest:
 
     @classmethod
     def setup_class(cls):
         print("Setting up store...")
-        cls.store = Store(host='localhost', port=6379)
+        cls.store = Repository(host='localhost', port=6379)
 
         # self.db_filedescriptor, acrewstic.app.config['DATABASE']
         #     = tempfile.mkstemp()

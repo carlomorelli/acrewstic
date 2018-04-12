@@ -5,7 +5,7 @@ Music and media repository for your NAS, written in Python
 
 
 ## About
-_acrewstic_ is implemented as a RESTful API using Python 2.7 with Flask library (http://flask.pocoo.org/).
+_acrewstic_ is implemented as a RESTful API using Python3 with Flask library (http://flask.pocoo.org/).
 A JS frontend will be provided in the future.
 
 The API is implemented for POST, PUT, GET, DELETE methods. It can be triggered as follows using `curl`:
