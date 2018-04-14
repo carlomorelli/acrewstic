@@ -1,5 +1,4 @@
 import mock
-from nose import with_setup
 from src.acrewlib import Repository
 
 TEST_KEY_STORE = 'test_key_store'
@@ -9,12 +8,12 @@ test_dict = {'test1': 'test2', 12345: 67890}
 test_list = range(1, 11)
 
 
-class RepositoryTest:
+class TestDataStore:
 
-    @classmethod
-    def setup_class(cls):
-        print("Setting up store...")
-        cls.store = Repository(host='localhost', port=6379)
+    def setup_class(self):
+        print(f'setup_class: {self.__name__}')
+        print('----------------------------------')
+        self.store = Repository(host='localhost', port=6379)
 
         # self.db_filedescriptor, acrewstic.app.config['DATABASE']
         #     = tempfile.mkstemp()
@@ -23,23 +22,19 @@ class RepositoryTest:
         # with acrewstic.app.app_context():
         #     acrewstic.init_db()
 
-    @classmethod
-    def teardown_class(cls):
-        print("Shutting down store...")
+    def teardown_class(self):
+        print(f'teardown_class: {self.__name__}')
+        print('----------------------------------')
+
         # os.close(self.db_filedescriptor)
         # os.unlink(acrewstic.app.config['DATABASE'])
 
-    def setup(self):
+    def setup_method(self):
         self.store.delete(TEST_KEY_STORE)
 
-    def teardown(self):
+    def teardown_method(self):
         self.store.delete(TEST_KEY_STORE)
 
-    @with_setup(setup, teardown)
-    def test(self):
-        assert True
-
-    @with_setup(setup, teardown)
     def test_0_put_string(self):
         current_size = len(self.store.fetch_all(TEST_KEY_STORE))
         assert current_size == 0
@@ -48,7 +43,6 @@ class RepositoryTest:
         assert new_size == current_size + 1
         print("Successfully setting up string")
 
-    @with_setup(setup, teardown)
     def test_1_put_int(self):
         current_size = len(self.store.fetch_all(TEST_KEY_STORE))
         assert current_size == 0
@@ -57,7 +51,6 @@ class RepositoryTest:
         assert new_size == current_size + 1
         print("Successfully setting up int")
 
-    @with_setup(setup, teardown)
     def test_2_put_dict(self):
         current_size = len(self.store.fetch_all(TEST_KEY_STORE))
         assert current_size == 0
@@ -66,7 +59,6 @@ class RepositoryTest:
         assert new_size == current_size + 1
         print("Successfully setting up dict")
 
-    @with_setup(setup, teardown)
     def test_3_append_and_get(self):
         current_size = len(self.store.fetch_all(TEST_KEY_STORE))
         assert current_size == 0
@@ -83,7 +75,6 @@ class RepositoryTest:
         assert isinstance(item, dict)
         print("Successfully appending string, int and dict in correct order")
 
-    @with_setup(setup, teardown)
     def test_4_set_and_get(self):
         self.store.set(TEST_KEY_STORE, test_list)
         current_size = len(self.store.fetch_all(TEST_KEY_STORE))

@@ -1,5 +1,5 @@
 mock
-nose
+pytest
 flask
 redis
 mockredispy
