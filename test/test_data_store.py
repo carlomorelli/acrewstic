@@ -1,5 +1,5 @@
 import mock
-from src.acrewlib import Repository
+from src.repository import Repository
 
 TEST_KEY_STORE = 'test_key_store'
 test_string = 'test1'

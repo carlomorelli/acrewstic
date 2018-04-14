@@ -48,3 +48,6 @@ class Repository:
 
     def delete(self, key_store):
         self.r.delete(key_store)
+
+    def info(self):
+        return self.r.info()
