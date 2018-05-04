@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, abort, request, make_response
-from .acrewlib import Repository
+from repository import Repository
 
 app = Flask(__name__)
 
@@ -54,7 +54,7 @@ def create_task():
     task = {
         'id': tasks[-1]['id'] + 1,
         'title': request.get_json()['title'],
-        'description': request.get_json().get('description', ""),
+        'description': request.get_json().get('description', ''),
         'done': False
     }
     tasks.append(task)
@@ -78,8 +78,7 @@ def update_task(task_id):
         if type(request.get_json()['done']) is not bool:
             abort(400)
     task[0]['title'] = request.get_json().get('title', task[0]['title'])
-    task[0]['description'] = request.get_json().get(
-        'description', task[0]['description'])
+    task[0]['description'] = request.get_json().get('description', task[0]['description'])
     task[0]['done'] = request.get_json().get('done', task[0]['done'])
     return jsonify({'task': task[0]})
 
@@ -103,7 +102,7 @@ def get_version():
         'version': '0.11.1'
     }
     try:
-        redis_info = repository.r.info()
+        redis_info = repository.info()
     except:
         redis_info = '<<<Unable to connect to database>>>'
     return jsonify({

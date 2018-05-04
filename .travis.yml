@@ -3,9 +3,9 @@ python:
   - "3.6"
 install:
   - pip install -r requirements.txt
-  - pip install coveralls
+  - pip install pytest-cov coveralls
 script:
-  - nosetests -s --with-coverage
+  - PYTHONPATH=src:test py.test -v
 services:
   - redis-server
 after_success:

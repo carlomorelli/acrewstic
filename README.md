@@ -22,7 +22,7 @@ PyPI requirements for the application are listed in `requirements.txt` file:
 
 * `flask` provides the web service library
 * `redis` is the redis-py package which allows interfacing the key-value store
-* `nose` is the reference test engine
+* `py.test` is the reference test engine
 
 
 ## Running with Docker and Docker-compose
