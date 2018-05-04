@@ -49,12 +49,12 @@ def get_task(task_id):
 
 @app.route('/acrewstic/tasks', methods=['POST'])
 def create_task():
-    if not request.json() or 'title' not in request.json():
+    if not request.get_json() or 'title' not in request.get_json():
         abort(400)
     task = {
         'id': tasks[-1]['id'] + 1,
-        'title': request.json()['title'],
-        'description': request.json().get('description', default=''),
+        'title': request.get_json()['title'],
+        'description': request.get_json().get('description', ''),
         'done': False
     }
     tasks.append(task)
@@ -66,20 +66,20 @@ def update_task(task_id):
     task = [task for task in tasks if task['id'] == task_id]
     if len(task) == 0:
         abort(404)
-    if not request.json():
+    if not request.get_json():
         abort(400)
-    if 'title' in request.json():
-        if type(request.json()['title']) is not str:
+    if 'title' in request.get_json():
+        if type(request.get_json()['title']) is not str:
             abort(400)
-    if 'description' in request.json():
-        if type(request.json()['description']) is not str:
+    if 'description' in request.get_json():
+        if type(request.get_json()['description']) is not str:
             abort(400)
-    if 'done' in request.json():
-        if type(request.json()['done']) is not bool:
+    if 'done' in request.get_json():
+        if type(request.get_json()['done']) is not bool:
             abort(400)
-    task[0]['title'] = request.json().get('title', default=task[0]['title'])
-    task[0]['description'] = request.json().get('description', default=task[0]['description'])
-    task[0]['done'] = request.json().get('done', default=task[0]['done'])
+    task[0]['title'] = request.get_json().get('title', task[0]['title'])
+    task[0]['description'] = request.get_json().get('description', task[0]['description'])
+    task[0]['done'] = request.get_json().get('done', task[0]['done'])
     return jsonify({'task': task[0]})
 
 

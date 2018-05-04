@@ -1,7 +1,9 @@
 import json
+
 import mock
-from src.acrewstic import app
 import mockredis
+
+from src.acrewstic import app
 
 
 class TestRestApi:
